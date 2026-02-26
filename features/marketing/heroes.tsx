@@ -8,7 +8,13 @@ export function Heroes() {
           <Image
             src={"/documents.webp"}
             fill
-            className="object-contain"
+            className="object-contain dark:hidden"
+            alt="Documents"
+          />
+          <Image
+            src={"/documents-dark.webp"}
+            fill
+            className="hidden dark:block object-contain"
             alt="Documents"
           />
         </div>
@@ -17,7 +23,13 @@ export function Heroes() {
             src={"/reading.webp"}
             alt="Reading"
             fill
-            className="object-contain"
+            className="dark:hiddem object-contain"
+          />
+          <Image
+            src={"/reading-dark.webp"}
+            alt="Reading"
+            fill
+            className="hidden dark:block object-contain"
           />
         </div>
       </div>

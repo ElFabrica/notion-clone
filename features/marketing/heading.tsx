@@ -15,7 +15,7 @@ export function Heading() {
         Better, faster work happens
       </h3>
       <Button>
-        Enter Jotion <ArrowRightIcon className="size-4" />
+        Enter Jotion <ArrowRightIcon className="h-2 w-2" />
       </Button>
     </div>
   );
