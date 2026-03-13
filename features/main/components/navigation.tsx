@@ -1,13 +1,15 @@
+import { ChevronsLeftIcon } from "lucide-react";
+
 export function Navigation() {
   return (
     <>
       <aside
         className={
-          "group/sidebar h-full bg-secoundary overflow-y-auto relative flex w-60 flex-col z-[99999]"
+          "group/sidebar h-full bg-secoundary overflow-y-auto relative flex w-60 flex-col z-99999"
         }
       >
         <div role="button" className="">
-          <ChevronsLeftIcon className="h-6 w-6" />
+          <ChevronsLeftIcon className="h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-3 opacity-0" />
         </div>
         <div>
           <p>Action items</p>
