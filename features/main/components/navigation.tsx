@@ -40,7 +40,7 @@ export function Navigation() {
   };
 
   const handleMouseMove = (event: MouseEvent) => {
-    if (isResizingRef.current) return;
+    if (!isResizingRef.current) return;
     let newWidth = event.clientX;
 
     if (newWidth < 240) newWidth = 240;
@@ -70,7 +70,7 @@ export function Navigation() {
       sidebarRef.current.style.width = isMobile ? "100%" : "240px";
       navBarRef.current.style.setProperty(
         "width",
-        isMobile ? "0" : "calc(100 - 240px)",
+        isMobile ? "0" : "calc(100% - 240px)",
       );
 
       navBarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");

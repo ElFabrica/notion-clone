@@ -30,7 +30,6 @@ export default function Page() {
         <PlusCircleIcon className="size-4" />
         Create a note
       </Button>
-      This is a proteceted Document
     </div>
   );
 }
