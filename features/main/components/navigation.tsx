@@ -20,7 +20,7 @@ export function Navigation() {
     event.stopPropagation();
 
     isResizingRef.current = true;
-    document.addEventListener("mouseenter", handleMouseMove);
+    document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
   };
 
@@ -119,7 +119,7 @@ export function Navigation() {
       >
         <nav className="bg-transparent px-3 py-2 w-full">
           {isCollapsed && (
-            <MenuIcon role="button" className="size-6 text-muted-foreground" />
+            <MenuIcon onClick={resetWidth} role="button" className="size-6 text-muted-foreground" />
           )}
         </nav>
       </div>
