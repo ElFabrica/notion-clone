@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import React, { useRef, ElementRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 export function Navigation() {
   const pathname = usePathname();
@@ -12,6 +13,20 @@ export function Navigation() {
   const navBarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
+
+  useEffect(() => {
+    if (isMobile) {
+      collapse();
+    } else {
+      resetWidth();
+    }
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (isMobile) {
+      collapse();
+    }
+  }, [pathname, isMobile]);
 
   const handleMouseDown = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -34,7 +49,10 @@ export function Navigation() {
     if (sidebarRef.current && navBarRef.current) {
       sidebarRef.current.style.width = `${newWidth}px`;
       navBarRef.current.style.setProperty("left", `${newWidth}px`);
-      navBarRef.current.style.setProperty("width", `calc(100% - ${newWidth}px)`);
+      navBarRef.current.style.setProperty(
+        "width",
+        `calc(100% - ${newWidth}px)`,
+      );
     }
   };
 
@@ -63,17 +81,17 @@ export function Navigation() {
     });
   };
 
-  const collapsed = () =>{
-    if(sidebarRef.current && navBarRef.current){
-      setIsCollapsed(true)
-      setIsResetting(true)
+  const collapse = () => {
+    if (sidebarRef.current && navBarRef.current) {
+      setIsCollapsed(true);
+      setIsResetting(true);
 
-      sidebarRef.current.style.width = "0"
-      navBarRef.current.style.setProperty("width", "100%")
-      navBarRef.current.style.setProperty("left", "0")
-      setTimeout(() => setIsResetting(false), 300)
+      sidebarRef.current.style.width = "0";
+      navBarRef.current.style.setProperty("width", "100%");
+      navBarRef.current.style.setProperty("left", "0");
+      setTimeout(() => setIsResetting(false), 300);
     }
-  }
+  };
 
   return (
     <>
@@ -86,7 +104,7 @@ export function Navigation() {
         )}
       >
         <div
-        onClick={collapsed}
+          onClick={collapse}
           role="button"
           className={cn(
             "text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-3 opacity-0 group-hover/sidebar:opacity-100 transition",
@@ -119,7 +137,11 @@ export function Navigation() {
       >
         <nav className="bg-transparent px-3 py-2 w-full">
           {isCollapsed && (
-            <MenuIcon onClick={resetWidth} role="button" className="size-6 text-muted-foreground" />
+            <MenuIcon
+              onClick={resetWidth}
+              role="button"
+              className="size-6 text-muted-foreground"
+            />
           )}
         </nav>
       </div>
