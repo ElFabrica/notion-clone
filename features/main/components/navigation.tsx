@@ -9,7 +9,7 @@ export function Navigation() {
   const isMobile = useMediaQuery("(max-width: 768)");
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
-  const navBaRef = useRef<ElementRef<"div">>(null);
+  const navBarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
 
@@ -31,10 +31,10 @@ export function Navigation() {
     if (newWidth < 240) newWidth = 240;
     if (newWidth > 480) newWidth = 480;
 
-    if (sidebarRef.current && navBaRef.current) {
+    if (sidebarRef.current && navBarRef.current) {
       sidebarRef.current.style.width = `${newWidth}px`;
       sidebarRef.current.style.setProperty("left", `${newWidth}`);
-      navBaRef.current.style.setProperty("width", `calc(100%-$${newWidth}px)`);
+      navBarRef.current.style.setProperty("width", `calc(100%-$${newWidth}px)`);
     }
   };
 
@@ -45,23 +45,35 @@ export function Navigation() {
   };
 
   const resetWidth = () => {
-    if (sidebarRef.current && navBaRef.current) {
+    if (sidebarRef.current && navBarRef.current) {
       setIsCollapsed(false);
       setIsResetting(false);
 
       sidebarRef.current.style.width = isMobile ? "100%" : "240px";
-      navBaRef.current.style.setProperty(
+      navBarRef.current.style.setProperty(
         "width",
         isMobile ? "0" : "calc(100 - 240px)",
       );
 
-      navBaRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
+      navBarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
     }
 
     setTimeout(() => {
       (setIsResetting(false), 300);
     });
   };
+
+  const collapsed = () =>{
+    if(sidebarRef.current && navBarRef.current){
+      setIsCollapsed(true)
+      setIsResetting(true)
+
+      sidebarRef.current.style.width = "0"
+      navBarRef.current.style.setProperty("width", "100%")
+      navBarRef.current.style.setProperty("left", "0")
+      setTimeout(() => setIsResetting(false), 300)
+    }
+  }
 
   return (
     <>
@@ -74,6 +86,7 @@ export function Navigation() {
         )}
       >
         <div
+        onClick={collapsed}
           role="button"
           className={cn(
             "text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-3 opacity-0 group-hover/sidebar:opacity-100 transition",
@@ -90,14 +103,14 @@ export function Navigation() {
         </div>
         <div
           onMouseDown={handleMouseDown}
-          onClick={() => {}}
+          onClick={resetWidth}
           className={
             "opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
           }
         />
       </aside>
       <div
-        ref={navBaRef}
+        ref={navBarRef}
         className={cn(
           "absolute top-0 z-999999 left-60 w-[calc(100%-240px)]",
           isResetting && "transition-all ease-in-out duration-300",
