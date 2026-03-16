@@ -40,7 +40,7 @@ export function Navigation() {
 
   const handleMouseUp = () => {
     isResizingRef.current = false;
-    document.addEventListener("mousedown", handleMouseMove);
+    document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
   };
 
