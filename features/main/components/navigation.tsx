@@ -33,7 +33,7 @@ export function Navigation() {
 
     if (sidebarRef.current && navBarRef.current) {
       sidebarRef.current.style.width = `${newWidth}px`;
-      sidebarRef.current.style.setProperty("left", `${newWidth}px`);
+      navBarRef.current.style.setProperty("left", `${newWidth}px`);
       navBarRef.current.style.setProperty("width", `calc(100%-${newWidth}px)`);
     }
   };
