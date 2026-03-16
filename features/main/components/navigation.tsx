@@ -40,8 +40,8 @@ export function Navigation() {
 
   const handleMouseUp = () => {
     isResizingRef.current = false;
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
   };
 
   const resetWidth = () => {
