@@ -4,6 +4,7 @@ import React, { useRef, ElementRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
+import { UserItem } from "./user-item";
 
 export function Navigation() {
   const pathname = usePathname();
@@ -114,7 +115,7 @@ export function Navigation() {
           <ChevronsLeftIcon className="h-6 w-6 " />
         </div>
         <div>
-          <p>Action items</p>
+          <UserItem/>
         </div>
         <div className={"mt-4"}>
           <p>Documents</p>
