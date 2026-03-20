@@ -1,14 +1,20 @@
-import { ChevronsLeftIcon, MenuIcon } from "lucide-react";
+import { ChevronsLeftIcon, MenuIcon, PlusIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { useRef, ElementRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { UserItem } from "./user-item";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Item } from "./item";
 
 export function Navigation() {
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768)");
+  const documents = useQuery(api.document.get);
+  const create = useMutation(api.document.create);
+
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
   const navBarRef = useRef<ElementRef<"div">>(null);
@@ -115,10 +121,13 @@ export function Navigation() {
           <ChevronsLeftIcon className="h-6 w-6 " />
         </div>
         <div>
-          <UserItem/>
+          <UserItem />
+          <Item onClick={() => {}} label="New page" icon={PlusIcon} />
         </div>
         <div className={"mt-4"}>
-          <p>Documents</p>
+          {documents?.map((document) => (
+            <p id={document._id}>{document.title}</p>
+          ))}
         </div>
         <div
           onMouseDown={handleMouseDown}
