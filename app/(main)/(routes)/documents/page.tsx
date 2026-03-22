@@ -13,7 +13,7 @@ export default function Page() {
   const create = useMutation(api.document.create);
 
   const onCreate = () => {
-    const promise = create({ title: "Untitle" });
+    const promise = create({ title: "Untitled" });
 
     toast.promise(promise, {
       loading: "Creating a note...",

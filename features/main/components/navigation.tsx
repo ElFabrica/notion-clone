@@ -1,4 +1,10 @@
-import { ChevronsLeftIcon, MenuIcon, PlusIcon } from "lucide-react";
+import {
+  ChevronsLeftIcon,
+  MenuIcon,
+  PlusIcon,
+  SearchIcon,
+  SettingsIcon,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { useRef, ElementRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
@@ -8,11 +14,11 @@ import { UserItem } from "./user-item";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Item } from "./item";
+import { DocumentList } from "./document-list";
 
 export function Navigation() {
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768)");
-  const documents = useQuery(api.document.get);
   const create = useMutation(api.document.create);
 
   const isResizingRef = useRef(false);
@@ -122,12 +128,12 @@ export function Navigation() {
         </div>
         <div>
           <UserItem />
+          <Item onClick={() => {}} label="Search" icon={SearchIcon} isSearch />
+          <Item onClick={() => {}} label="Settings" icon={SettingsIcon} />
           <Item onClick={() => {}} label="New page" icon={PlusIcon} />
         </div>
         <div className={"mt-4"}>
-          {documents?.map((document) => (
-            <p id={document._id}>{document.title}</p>
-          ))}
+          <DocumentList />
         </div>
         <div
           onMouseDown={handleMouseDown}
