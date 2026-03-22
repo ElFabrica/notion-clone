@@ -4,6 +4,7 @@ import {
   PlusIcon,
   SearchIcon,
   SettingsIcon,
+  Trash2Icon,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { useRef, ElementRef, useState } from "react";
@@ -15,6 +16,13 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Item } from "./item";
 import { DocumentList } from "./document-list";
+import { toast } from "sonner";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { TrashBox } from "./trash-box";
 
 export function Navigation() {
   const pathname = usePathname();
@@ -106,6 +114,16 @@ export function Navigation() {
     }
   };
 
+  const handleCreate = () => {
+    const promise = create({ title: "Untitled" });
+
+    toast.promise(promise, {
+      loading: "Creating a new note...",
+      success: "New note created",
+      error: "Failed to create a new note",
+    });
+  };
+
   return (
     <>
       <aside
@@ -130,10 +148,22 @@ export function Navigation() {
           <UserItem />
           <Item onClick={() => {}} label="Search" icon={SearchIcon} isSearch />
           <Item onClick={() => {}} label="Settings" icon={SettingsIcon} />
-          <Item onClick={() => {}} label="New page" icon={PlusIcon} />
+          <Item onClick={handleCreate} label="New page" icon={PlusIcon} />
         </div>
         <div className={"mt-4"}>
           <DocumentList />
+          <Item onClick={handleCreate} icon={PlusIcon} label="New page" />
+          <Popover>
+            <PopoverTrigger className="w-full mt-4">
+              <Item label="Trash" icon={Trash2Icon} />
+            </PopoverTrigger>
+            <PopoverContent
+              className="p-0 w-72"
+              side={isMobile ? "bottom" : "right"}
+            >
+              <TrashBox />
+            </PopoverContent>
+          </Popover>
         </div>
         <div
           onMouseDown={handleMouseDown}
