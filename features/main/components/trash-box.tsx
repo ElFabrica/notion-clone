@@ -1,9 +1,12 @@
 "use client";
 
+import { ConfirmModal } from "@/components/models/confirm-modal";
+import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
+import { SearchIcon, Trash2Icon, UndoIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -62,5 +65,55 @@ export function TrashBox() {
     );
   }
 
-  return <div></div>;
+  return (
+    <div className="text-sm">
+      <div className="flex items-center gap-x-1 p-2">
+        <SearchIcon className="size-4" />
+        <Input
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+          className="g-7 px-2 focus:visited:ring-transparent bg-secondary"
+          placeholder="Filter by page title"
+        />
+      </div>
+      <div className="mt-2 px-1 pb-1">
+        <p className="hidden last:block text-xs text-center text-muted-foreground pb-2">
+          No documents found.
+        </p>
+        {filterDocuments?.map((document) => (
+          <div
+            key={document._id}
+            role="button"
+            onClick={() => {
+              onClick(document._id);
+            }}
+            className="text-sm rounded-sm w-full hover:bg-primary/5 flex items-center text-primary justify-between"
+          >
+            <span className="truncate pl-2">{document.title}</span>
+            <div className="flex items-center">
+              <div
+                onClick={(e) => {
+                  onRestore(e, document._id);
+                }}
+                role="button"
+                className="rounded-sm p-2 hover:bg-neutral-200"
+              >
+                <UndoIcon className="size-4 text-muted-foreground " />
+              </div>
+              <ConfirmModal onConfirm={() => onRemove(document._id)}>
+                <div
+                  role="button"
+                  className="rounded-sm p-2 hover:bg-neutral-200"
+                >
+                  <Trash2Icon className="size-4 text-muted-foreground" />
+                </div>
+              </ConfirmModal>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
