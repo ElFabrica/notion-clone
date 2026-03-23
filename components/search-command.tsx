@@ -15,3 +15,10 @@ CommandItem,
 CommandList
 } from "@/components/ui/command"
 import {useSearch} "@/hooks/use-search"
+import {api} from "@/convex/_generated/api" 
+
+export function SearchCommand() {
+    const {user} = useUser()
+    const router = useRouter()
+    const documents = useQuery(api.documents.getSearch) 
+}
