@@ -23,17 +23,13 @@ export function SearchCommand() {
   const documents = useQuery(api.document.gerSearch);
   const [isMounted, setIsMounted] = useState(false);
 
-  const toggle = useSearch((store: any) => store.toggle);
-  const isOpen = useSearch((store: any) => store.toggle);
-  const onClose = useSearch((store: any) => store.onClose);
+  const toggle = useSearch((store) => store.toggle);
+  const { isOpen } = useSearch();
+  const onClose = useSearch((store) => store.onClose);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  if (!isMounted) {
-    return null;
-  }
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -44,24 +40,28 @@ export function SearchCommand() {
     };
     document.addEventListener("keydown", down);
     return () => {
-      (document.removeEventListener("keydown", down), [toggle]);
+      document.removeEventListener("keydown", down);
     };
-  }, []);
+  }, [toggle]);
 
   const onSelect = (id: string) => {
     router.push(`/documents/${id}`);
     onClose();
   };
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <CommandDialog open={isOpen} onOpenChange={onClose}>
       <CommandInput placeholder={`Search ${user?.fullName}'s Jotion`} />
       <CommandEmpty>No results found </CommandEmpty>
-      <CommandGroup heading="Documents">
+      <CommandGroup heading="Documents" className="max-h-100 overflow-y-auto">
         {documents?.map((document) => (
           <CommandItem
             key={document._id}
-            value={`${document._id}-${document._id}`}
+            value={`${document._id}-${document.title}`}
             title={document.title}
             onSelect={() => onSelect(document._id)}
           >
