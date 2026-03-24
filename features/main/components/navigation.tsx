@@ -12,7 +12,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { UserItem } from "./user-item";
-import { useQuery, useMutation } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Item } from "./item";
 import { DocumentList } from "./document-list";
@@ -24,10 +24,15 @@ import {
 } from "@/components/ui/popover";
 import { TrashBox } from "./trash-box";
 
+import { useSearch } from "@/hooks/use-search";
+import { useSettings } from "@/hooks/use-settings";
+
 export function Navigation() {
+  const settings = useSettings();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768)");
   const create = useMutation(api.document.create);
+  const search = useSearch();
 
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -146,8 +151,17 @@ export function Navigation() {
         </div>
         <div>
           <UserItem />
-          <Item onClick={() => {}} label="Search" icon={SearchIcon} isSearch />
-          <Item onClick={() => {}} label="Settings" icon={SettingsIcon} />
+          <Item
+            onClick={search.onOpen}
+            label="Search"
+            icon={SearchIcon}
+            isSearch
+          />
+          <Item
+            onClick={settings.onOpen}
+            label="Settings"
+            icon={SettingsIcon}
+          />
           <Item onClick={handleCreate} label="New page" icon={PlusIcon} />
         </div>
         <div className={"mt-4"}>
