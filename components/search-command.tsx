@@ -1,24 +1,79 @@
-"use client"
+"use client";
 
-import {useEffect, useState} from "react"
-import {FileIcon} from "lucide-react"
-import {useQuery} from "convex/react"
-import {useRouter} from "next/navigation"
-import {useUser} from "@clerk/clerk-react"
+import { useEffect, useState } from "react";
+import { FileIcon } from "lucide-react";
+import { useQuery } from "convex/react";
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/clerk-react";
 
 import {
-CommandDialog,
-CommandEmpty,
-CommandGroup,
-CommandInput,
-CommandItem,
-CommandList
-} from "@/components/ui/command"
-import {useSearch} "@/hooks/use-search"
-import {api} from "@/convex/_generated/api" 
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { useSearch } from "@/hooks/use-search";
+import { api } from "@/convex/_generated/api";
 
 export function SearchCommand() {
-    const {user} = useUser()
-    const router = useRouter()
-    const documents = useQuery(api.documents.getSearch) 
+  const { user } = useUser();
+  const router = useRouter();
+  const documents = useQuery(api.document.gerSearch);
+  const [isMounted, setIsMounted] = useState(false);
+
+  const toggle = useSearch((store: any) => store.toggle);
+  const isOpen = useSearch((store: any) => store.toggle);
+  const onClose = useSearch((store: any) => store.onClose);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        toggle();
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => {
+      (document.removeEventListener("keydown", down), [toggle]);
+    };
+  }, []);
+
+  const onSelect = (id: string) => {
+    router.push(`/documents/${id}`);
+    onClose();
+  };
+
+  return (
+    <CommandDialog open={isOpen} onOpenChange={onClose}>
+      <CommandInput placeholder={`Search ${user?.fullName}'s Jotion`} />
+      <CommandEmpty>No results found </CommandEmpty>
+      <CommandGroup heading="Documents">
+        {documents?.map((document) => (
+          <CommandItem
+            key={document._id}
+            value={`${document._id}-${document._id}`}
+            title={document.title}
+            onSelect={() => onSelect(document._id)}
+          >
+            {document.icon ? (
+              <p className="mr-2 text-4.5">{document.icon}</p>
+            ) : (
+              <FileIcon className="mr-2 size-4" />
+            )}
+            <span>{document.title}</span>
+          </CommandItem>
+        ))}
+      </CommandGroup>
+    </CommandDialog>
+  );
 }
