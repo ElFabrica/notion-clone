@@ -20,7 +20,7 @@ export function NavBar({ isCollapsed, onResetWith }: NavBarProps) {
   });
 
   if (document === undefined) {
-    return <p>Loading...</p>;
+    return <nav className={"bg-background dark:bg-[#1F1F1F] px-3 py-2 w-full flex items-center gap-x-4"}> </nav>;
   }
 
   if (document === null) {
@@ -28,7 +28,7 @@ export function NavBar({ isCollapsed, onResetWith }: NavBarProps) {
   }
 
   return (
-    <div className="bg-background dark:bg-[#1F1F1F] px-3 py-2 w-full flex items-center gap-x-4">
+    <nav className="bg-background dark:bg-[#1F1F1F] px-3 py-2 w-full flex items-center gap-x-4">
       {isCollapsed && (
         <MenuIcon
           role="button"
@@ -36,9 +36,14 @@ export function NavBar({ isCollapsed, onResetWith }: NavBarProps) {
           className="size-6 text-muted-foreground"
         />
       )}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between w-full">
         <Title initialData={document} />
       </div>
-    </div>
+    </nav>
+    {
+      document.isArchived && (
+        <Banner documentId={document._id}/>
+      )
+    }
   );
 }
