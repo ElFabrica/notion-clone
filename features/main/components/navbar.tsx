@@ -7,6 +7,7 @@ import { MenuIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { Title } from "./title";
 import { Banner } from "./banner";
+import { Menu } from "./menu";
 
 interface NavBarProps {
   isCollapsed: boolean;
@@ -48,6 +49,9 @@ export function NavBar({ isCollapsed, onResetWith }: NavBarProps) {
         )}
         <div className="flex items-center justify-between w-full">
           <Title initialData={document} />
+          <div>
+            <Menu documentId={document._id} />
+          </div>
         </div>
       </nav>
       {document.isArchived && <Banner documentId={document._id} />}
