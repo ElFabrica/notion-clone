@@ -7,5 +7,9 @@ interface DocumentPageProps {
 export default async function Page({ params }: DocumentPageProps) {
   const { documentId } = await params;
 
-  return <DocumentPage documentId={documentId} />;
+  return (
+    <>
+      <DocumentPage documentId={documentId} />;
+    </>
+  );
 }

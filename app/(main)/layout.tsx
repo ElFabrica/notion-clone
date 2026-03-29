@@ -26,8 +26,10 @@ export default function LayoutPage({
   return (
     <div className={"h-full flex dark:bg-[#1f1f1f] "}>
       <Navigation />
-      <SearchCommand />
-      <main className="flex-1 h-full overflow-y-auto">{children}</main>
+      <main className="flex-1 h-full overflow-y-auto">
+        <SearchCommand />
+        {children}
+      </main>
     </div>
   );
 }

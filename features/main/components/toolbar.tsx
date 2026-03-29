@@ -15,6 +15,7 @@ interface ToolbarProps {
 }
 
 export function Toolbar({ initialData, preview }: ToolbarProps) {
+  const removeIcon = useMutation(api.document.removeIcon);
   const inputRef = useRef<ElementRef<"textarea">>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(initialData.title);
@@ -46,18 +47,30 @@ export function Toolbar({ initialData, preview }: ToolbarProps) {
       disableInput();
     }
   };
+  const onIconSelect = (icon: string) => {
+    update({
+      id: initialData._id,
+      icon,
+    });
+  };
+
+  const onRemoveIcon = () => {
+    removeIcon({
+      id: initialData._id,
+    });
+  };
 
   return (
     <div className="pl-13.5 group relative">
       {!!initialData.icon && !preview && (
         <div className="flex items-center gap-x-2 group/icon pt-6">
-          <IconPicker onChange={() => {}}>
+          <IconPicker onChange={onIconSelect}>
             <p className="text-6xl hover:opacity-75 transition">
               {initialData.icon}
             </p>
           </IconPicker>
           <Button
-            onClick={() => {}}
+            onClick={onRemoveIcon}
             className="rounded-full opacity-0 group-hover:opacity-100 transition text-muted-foreground text-xs"
             variant={"outline"}
             size={"icon"}
@@ -71,7 +84,7 @@ export function Toolbar({ initialData, preview }: ToolbarProps) {
       )}
       <div className="opacity-0 group-hover:opacity-100 flex items-center gap-x-1 py-4 ">
         {!initialData.icon && !preview && (
-          <IconPicker asChild onChange={() => {}}>
+          <IconPicker asChild onChange={onIconSelect}>
             <Button
               className="text-muted-foreground text-xs "
               variant={"outline"}
@@ -103,7 +116,7 @@ export function Toolbar({ initialData, preview }: ToolbarProps) {
           onChange={(e) => {
             onInput(e.target.value);
           }}
-          className="text-5xl bg-transparent font-medium wrap-break-word outline-none text-[#3F3F3F] dark:text-[#CFCFCF] resize-none"
+          className="text-5xl bg-transparent font-bold wrap-break-word outline-none text-[#3F3F3F] dark:text-[#CFCFCF] resize-none"
         />
       ) : (
         <div
