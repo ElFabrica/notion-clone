@@ -65,12 +65,12 @@ export function Item({
   const onCreate = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!id) return;
     event.stopPropagation();
-    const promise = create({ title: "untitled", parentDocument: id }).then(
+    const promise = create({ title: "Untitled", parentDocument: id }).then(
       (documentId) => {
         if (!expanded) {
           onExpand?.();
         }
-        // router.push(`/documents/${documentId}`);
+        router.push(`/documents/${documentId}`);
       },
     );
     toast.promise(promise, {
@@ -83,7 +83,9 @@ export function Item({
   const onArchive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
     if (!id) return;
-    const promise = archive({ id });
+    const promise = archive({ id }).then((documentId) => {
+      router.push(`/documents`);
+    });
 
     toast.promise(promise, {
       loading: "Moving to trash...",

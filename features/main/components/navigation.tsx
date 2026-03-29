@@ -6,7 +6,7 @@ import {
   SettingsIcon,
   Trash2Icon,
 } from "lucide-react";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useRef, ElementRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@/lib/utils";
@@ -26,14 +26,14 @@ import { TrashBox } from "./trash-box";
 
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
-import { Navbar } from "@/features/marketing/navbar";
 import { NavBar } from "./navbar";
 
 export function Navigation() {
+  const router = useRouter();
   const settings = useSettings();
   const pathname = usePathname();
   const params = useParams();
-  const isMobile = useMediaQuery("(max-width: 768)");
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const create = useMutation(api.document.create);
   const search = useSearch();
 
@@ -106,8 +106,8 @@ export function Navigation() {
     }
 
     setTimeout(() => {
-      (setIsResetting(false), 300);
-    });
+      setIsResetting(false);
+    }, 300);
   };
 
   const collapse = () => {
@@ -123,7 +123,9 @@ export function Navigation() {
   };
 
   const handleCreate = () => {
-    const promise = create({ title: "Untitled" });
+    const promise = create({ title: "Untitled" }).then((documentId) => {
+      router.push(`/documents/${documentId}`);
+    });
 
     toast.promise(promise, {
       loading: "Creating a new note...",
@@ -137,7 +139,7 @@ export function Navigation() {
       <aside
         ref={sidebarRef}
         className={cn(
-          "group/sidebar h-full bg-secoundary overflow-y-auto relative flex w-60 flex-col z-9999",
+          "group/sidebar h-full bg-secoundary overflow-y-auto relative flex w-60 flex-col z-[9999]",
           isResetting && "transition-all ease-in-out duration-300",
           isMobile && "w-0",
         )}
@@ -193,7 +195,7 @@ export function Navigation() {
       <div
         ref={navBarRef}
         className={cn(
-          "absolute top-0 z-9999 left-60 w-[calc(100%-240px)]",
+          "absolute top-0 z-[9999] left-60 w-[calc(100%-240px)]",
           isResetting && "transition-all ease-in-out duration-300",
           isMobile && "left-0 w-full",
         )}
