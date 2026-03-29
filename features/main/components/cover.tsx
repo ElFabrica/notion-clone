@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useCoverImage } from "@/hooks/user-cover-image";
@@ -68,3 +69,7 @@ export function Cover({ preview, url }: coverImageProps) {
     </div>
   );
 }
+
+Cover.Skeleton = function CoverSkeleton() {
+  return <Skeleton className="w-full  h-[12vh]" />;
+};
