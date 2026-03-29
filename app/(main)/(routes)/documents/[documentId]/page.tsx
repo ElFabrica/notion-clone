@@ -9,7 +9,7 @@ export default async function Page({ params }: DocumentPageProps) {
 
   return (
     <>
-      <DocumentPage documentId={documentId} />;
+      <DocumentPage documentId={documentId} />
     </>
   );
 }

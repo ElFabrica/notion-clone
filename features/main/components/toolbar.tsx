@@ -4,6 +4,7 @@ import { IconPicker } from "@/components/icon-picker";
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
+import { useCoverImage } from "@/hooks/user-cover-image";
 import { useMutation } from "convex/react";
 import { ImageIcon, SmileIcon, XIcon } from "lucide-react";
 import { ElementRef, useRef, useState } from "react";
@@ -16,6 +17,7 @@ interface ToolbarProps {
 
 export function Toolbar({ initialData, preview }: ToolbarProps) {
   const removeIcon = useMutation(api.document.removeIcon);
+  const coverImage = useCoverImage();
   const inputRef = useRef<ElementRef<"textarea">>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(initialData.title);
@@ -71,11 +73,11 @@ export function Toolbar({ initialData, preview }: ToolbarProps) {
           </IconPicker>
           <Button
             onClick={onRemoveIcon}
-            className="rounded-full opacity-0 group-hover:opacity-100 transition text-muted-foreground text-xs"
+            className="rounded-full opacity-0 group-hover/icon:opacity-100 transition text-muted-foreground text-xs"
             variant={"outline"}
             size={"icon"}
           >
-            <XIcon />
+            <XIcon className="size-4" />
           </Button>
         </div>
       )}
@@ -97,7 +99,7 @@ export function Toolbar({ initialData, preview }: ToolbarProps) {
         )}
         {!initialData.coverImage && !preview && (
           <Button
-            onClick={() => {}}
+            onClick={coverImage.onOpen}
             className="text-muted-foreground text-xs"
             variant={"outline"}
             size={"sm"}
