@@ -30,7 +30,6 @@ export default function Editor({
   };
 
   const editor: BlockNoteEditor = useCreateBlockNote({
-    editable,
     initialContent: initialContent
       ? (JSON.parse(initialContent) as PartialBlock[])
       : undefined,
@@ -45,6 +44,7 @@ export default function Editor({
         onChange={onEditorContent}
         editor={editor}
         theme={resolvedTheme === "dark" ? "dark" : "light"}
+        editable={editable}
       />
     </div>
   );

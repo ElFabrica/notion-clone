@@ -110,13 +110,16 @@ export function Item({
           className="h-full rounded-sm hover:bg-neutral-300 dark:bg-neutral-900 mr-1"
           onClick={handleExpand}
         >
-          <ChevronIcon className="size-4 shrink-0 text-muted-foreground/50" />
+          <ChevronIcon className="size-4 shrink-0 text-[18px] text-muted-foreground/50" />
         </div>
       )}
-      <div className="shrink-0 h-4 mr-2 text-muted-foreground">
-        {documentIcon}
-      </div>
-      <Icon className={"shrink-0 h-4 mr-2 text-muted-foreground"} />
+      {documentIcon ? (
+        <div className="shrink-0 h-4.5 w-4.5 mr-2 text-muted-foreground">
+          {documentIcon}
+        </div>
+      ) : (
+        <Icon className={"shrink-0 h-4 mr-2 text-muted-foreground"} />
+      )}
       <span className="truncate">{label}</span>
       {isSearch && (
         <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
